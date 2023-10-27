@@ -9,6 +9,12 @@ import sys
 pattern = r'K_[^K]*'
 
 def extract_relationships(courses_file, prerequisite_dependency_file, output_file):
+    """
+        This program identifies all course prerequisites based on the relationships defined between 
+        course-concept and prerequisite-dependent relations in the MOOCCube Dataset. 
+        It generates a JSON file with a prerequisites field for each course.
+        The courses argument should have been generated using the extract-course-concepts program.
+    """
     # Create a dictionary to store a concept and its prerequisites
     relationship_dict = {}
     with open(prerequisite_dependency_file, 'r', encoding='utf-8') as file:

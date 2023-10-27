@@ -6,7 +6,9 @@ import sys
 def extract_distinct_courses(input_file, output_file):
     """This program extracts the distinct courses 
         that exist in the user profiles after filtering them. 
-        It writes to a CSV file specified in the command line arguments."""
+        It writes to a CSV file specified in the command line arguments.
+        You may use the JSON file generated from running the user-cleaner program
+        or the user.json file from the MOOCCube dataset."""
     
     courses = set()
 
