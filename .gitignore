@@ -5,4 +5,4 @@
 *.csv
 
 # Ignore all json-files generated
-.json
+*.json
