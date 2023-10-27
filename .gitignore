@@ -1,0 +1,8 @@
+# Ignore Mac system files
+.DS_store
+
+# Ignore all csv files generated
+*.csv
+
+# Ignore all json-files generated
+.json

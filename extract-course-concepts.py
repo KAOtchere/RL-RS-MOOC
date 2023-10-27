@@ -55,10 +55,9 @@ def create_course_concept_json(csv_file, json_file, output_file):
 
     # Write the JSON data to the output file
     with open(output_file, 'w', encoding='utf-8') as outfile:
-        with open(output_file, 'w') as outfile:
-            for course_concept in output_data:
-                json.dump(course_concept, outfile, separators=(',', ':'), ensure_ascii=False)
-                outfile.write('\n')
+        for course_concept in output_data:
+            json.dump(course_concept, outfile, separators=(',', ':'), ensure_ascii=False)
+            outfile.write('\n')
 
     print(f"Courses with their concepts have been written to {output_file}")
 
