@@ -4,7 +4,7 @@ import csv
 import json
 import sys
 
-def create_course_concept_json(csv_file, json_file, output_file):
+def create_course_concept_json(csv_file, json_file):
     """This program creates a course object that contains 
         a course id and the concepts taught in that course.
         It is generated using the course CSV file generated
@@ -53,13 +53,8 @@ def create_course_concept_json(csv_file, json_file, output_file):
     # Create the JSON object in the desired format
     output_data = [{'course': course, 'concepts': concepts} for course, concepts in course_concepts.items()]
 
-    # Write the JSON data to the output file
-    with open(output_file, 'w', encoding='utf-8') as outfile:
-        for course_concept in output_data:
-            json.dump(course_concept, outfile, separators=(',', ':'), ensure_ascii=False)
-            outfile.write('\n')
-
-    print(f"Courses with their concepts have been written to {output_file}")
+    return output_data
+    
 
 if __name__ == '__main__':
     if len(sys.argv) != 4:
@@ -70,4 +65,12 @@ if __name__ == '__main__':
     json_file = sys.argv[2]
     output_file = sys.argv[3]
 
-    create_course_concept_json(csv_file, json_file, output_file)
+    courses_with_concepts = create_course_concept_json(csv_file, json_file)
+
+    # Write the JSON data to the output file
+    with open(output_file, 'w', encoding='utf-8') as outfile:
+        for course_concept in courses_with_concepts:
+            json.dump(course_concept, outfile, separators=(',', ':'), ensure_ascii=False)
+            outfile.write('\n')
+
+    print(f"Courses with their concepts have been written to {output_file}")

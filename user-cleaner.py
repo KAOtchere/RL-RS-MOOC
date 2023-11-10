@@ -1,7 +1,7 @@
 #Author: Kwabena Aboagye-Otchere
 import pandas as pd
 
-def filter_users(input_file, output_file, min_course_depth):
+def filter_users(input_file, min_course_depth):
     users = pd.read_json(input_file, lines=True, encoding='utf-8')
     
     filtered_users = users[users['course_order'].apply(len) >= min_course_depth]
@@ -20,7 +20,7 @@ if __name__ == "__main__":
     output_file = sys.argv[2]
     min_course_depth = int(sys.argv[3])
 
-    filtered_users = filter_users(input_file, output_file, min_course_depth)
-    
+    filtered_users = filter_users(input_file, min_course_depth)
+
     filtered_users.to_json(output_file, lines=True, orient='records', force_ascii=False)
 

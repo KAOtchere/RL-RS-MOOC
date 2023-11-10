@@ -8,7 +8,7 @@ import sys
 # The format for each relation is <K_prerequisite> <K_concept> but each of these arguments may have whitespace within them
 pattern = r'K_[^K]*'
 
-def extract_relationships(courses_file, prerequisite_dependency_file, output_file):
+def extract_relationships(courses_file, prerequisite_dependency_file):
     """
         This program identifies all course prerequisites based on the relationships defined between 
         course-concept and prerequisite-dependent relations in the MOOCCube Dataset. 
@@ -57,12 +57,8 @@ def extract_relationships(courses_file, prerequisite_dependency_file, output_fil
             except json.JSONDecodeError:
                 print(f"Failed to parse JSON data in line: {line}")
 
-
-    # Write the JSON data to the output file
-    with open(output_file, 'w', encoding='utf-8') as outfile:
-        for course in updated_courses:
-            json.dump(course, outfile, separators=(',', ':'), ensure_ascii=False)
-            outfile.write('\n')
+    return updated_courses
+    
 
 if __name__ == "__main__":
     if len(sys.argv) != 4:
@@ -72,5 +68,12 @@ if __name__ == "__main__":
     prerequisite_dependency_file = sys.argv[2]
     output_file = sys.argv[3]
 
-    extract_relationships(courses_file, prerequisite_dependency_file, output_file)
+    courses = extract_relationships(courses_file, prerequisite_dependency_file)
+
+    # Write the JSON data to the output file
+    with open(output_file, 'w', encoding='utf-8') as outfile:
+        for course in courses:
+            json.dump(course, outfile, separators=(',', ':'), ensure_ascii=False)
+            outfile.write('\n')
+            
     print(f"Relationships extracted and saved to '{output_file}'")
