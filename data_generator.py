@@ -1,6 +1,7 @@
 import pandas as pd
 import json
 import sys
+from lookup_functions import make_concept_adjacency_list, find_path, determine_parents_dimensions, find_concept_dimension
 #for each course in courses.csv, we make the vector representation for it
 
 ranked_courses = pd.read_csv('ranked_courses.csv', header=0)
@@ -27,9 +28,13 @@ all_courses = pd.merge(all_courses, course_teachers, how='left', left_on='course
 all_courses = all_courses.drop(axis=1, columns=['Course'])
 
 all_courses = pd.merge(all_courses, ranked_teachers, how='left', on='Teacher')
-# all_courses = all_courses.drop(axis=1, columns=['School', 'Occurrences'])
-# all_courses.rename(columns={'rank': 'school_rank'}, inplace=True)
+all_courses = all_courses.drop(axis=1, columns=['Occurrences'])
+all_courses.rename(columns={'Rank': 'teacher_rank'}, inplace=True)
 
+concept_graph = make_concept_adjacency_list('course-concept.json')
+parent_concepts = determine_parents_dimensions(concept_graph)
 
+#TODO fix school rank "over-counting"
+#TODO find ints with find paths, use countsort algo variation to determine vector dimension values
 
-print(all_courses.loc[0])
+#write dataframe to file
