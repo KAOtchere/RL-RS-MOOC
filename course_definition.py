@@ -4,13 +4,13 @@ class Course():
 
     ID_PATTERN = r"C_course-v1:(\w+)\+(\w+)(?:\+\w+)?"
 
-    def __init__(self, course_id, teacher_rank, school_rank, concepts, prerequisites):
+    def __init__(self, course_id, teacher_rank, school_rank, course_rank, concepts, prerequisites):
         self.course_id = course_id
         self.concepts = concepts
         self.prerequisites = prerequisites
         self.teacher_rank = teacher_rank
         self.school_rank = school_rank
-        #TODO add course popularity as dimension
+        self.course_rank = course_rank
 
     def __hash__(self):
         return hash(self.course_id)
@@ -28,9 +28,9 @@ class Course():
         return self_id.groups()[1] == other_id.groups()[1]
     
     def get_as_input(self):
-        vector =  [self.teacher_rank, self.school_rank] + self.concepts
+        vector =  [self.teacher_rank, self.school_rank, self.course_rank] + self.concepts
         return vector
 
     def get_as_target(self):
-        vector =  [self.teacher_rank, self.school_rank] + self.prerequisites
+        vector =  [self.teacher_rank, self.school_rank, self.course_rank] + self.prerequisites
         return vector

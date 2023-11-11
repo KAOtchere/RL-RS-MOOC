@@ -4,7 +4,7 @@ import csv
 import json
 import sys
 
-def create_course_concept_json(csv_file, json_file):
+def map_concepts_to_course(csv_file, json_file):
     """This program creates a course object that contains 
         a course id and the concepts taught in that course.
         It is generated using the course CSV file generated
@@ -58,14 +58,14 @@ def create_course_concept_json(csv_file, json_file):
 
 if __name__ == '__main__':
     if len(sys.argv) != 4:
-        print("Usage: python create_course_concept_json.py <courses_input_file.csv> <course-concept.json> <output_file.json>")
+        print("Usage: python extract_course_concepts.py <courses_input_file.csv> <course-concept.json> <output_file.json>")
         sys.exit(1)
 
     csv_file = sys.argv[1]
     json_file = sys.argv[2]
     output_file = sys.argv[3]
 
-    courses_with_concepts = create_course_concept_json(csv_file, json_file)
+    courses_with_concepts = map_concepts_to_course(csv_file, json_file)
 
     # Write the JSON data to the output file
     with open(output_file, 'w', encoding='utf-8') as outfile:
