@@ -4,14 +4,18 @@ import sys
 
 
 def generate_teacher_rankings(users_data, teacher_course_data):
-
-    # Step 1: Load the JSON objects from File 1
+    user_courses = list()
+    # Step 1: Load the users
     with open(users_data, 'r', encoding='utf-8') as file:
-        users_data = [json.loads(line) for line in file]
+        # users_data = [json.loads(line) for line in file]
 
     # Extract a list of all courses taken by users
-    user_courses = [course for user in users_data for course in user['course_order']]
-
+    # user_courses = [course for user in users_data for course in user['course_order']]
+        
+        for record in file:
+            user = json.loads(record)
+            user_courses.extend(user.get('course_order', []))
+    
     # Step 2: Load the teacher-course pairs from File 2
     # Create a mapping of courses to teachers
     course_teacher_dict = {}
@@ -21,12 +25,13 @@ def generate_teacher_rankings(users_data, teacher_course_data):
             line = line.strip()
             if not line:
                 continue  # Skip empty lines
-            # Assuming the format is "Teacher\tCourse"
+
             teacher, course = line.split('\t')
             all_teachers.add(teacher)
             if course in course_teacher_dict:
                 course_teacher_dict[course].append(teacher)
-            course_teacher_dict[course] = [teacher]
+            else:
+                course_teacher_dict[course] = [teacher]
 
     # Step 3: Count how many times each teacher appears
     teacher_count = {}
@@ -78,7 +83,6 @@ if __name__ == "__main__":
     users_data = sys.argv[1]
     teacher_course_file = sys.argv[2]
     output_file = sys.argv[3]
-
     ranked_teachers = generate_teacher_rankings(users_data, teacher_course_file)
     ranked_teachers.to_csv(output_file, index=False, encoding='utf-8')
     print(f"Ranked teachers written to {output_file}")

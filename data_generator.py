@@ -32,4 +32,4 @@ all_courses = pd.merge(all_courses, ranked_teachers, how='left', on='Teacher')
 
 
 
-print(all_courses.loc[400])
+print(all_courses.loc[0])
