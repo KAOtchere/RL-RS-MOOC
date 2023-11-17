@@ -1,7 +1,7 @@
 import pandas as pd
 import json
 import sys
-from lookup_functions import make_concept_adjacency_list, find_path, determine_parents_dimensions, find_concept_dimension
+from lookup_functions import make_concept_adjacency_list, find_path, determine_parents_dimensions, find_concept_dimension, count_sort
 #for each course in courses.csv, we make the vector representation for it
 
 ranked_courses = pd.read_csv('ranked_courses.csv', header=0)
@@ -29,12 +29,24 @@ all_courses = all_courses.drop(axis=1, columns=['Course'])
 
 all_courses = pd.merge(all_courses, ranked_teachers, how='left', on='Teacher')
 all_courses = all_courses.drop(axis=1, columns=['Occurrences'])
+
 all_courses.rename(columns={'Rank': 'teacher_rank'}, inplace=True)
 
-concept_graph = make_concept_adjacency_list('course-concept.json')
+concept_graph = make_concept_adjacency_list('prerequisite-dependency.json')
 parent_concepts = determine_parents_dimensions(concept_graph)
 
-#TODO fix school rank "over-counting"
-#TODO find ints with find paths, use countsort algo variation to determine vector dimension values
+vector_size = len(parent_concepts)
+
+# all_courses = all_courses.head(20)
+
+all_courses['encoded_concepts'] = all_courses['concepts'].apply(lambda lst: [find_concept_dimension(v, concept_graph, parent_concepts) for v in lst])
+all_courses['concepts_vector'] = all_courses['encoded_concepts'].apply(count_sort, dimension_size=vector_size)
+
+all_courses['encoded_prerequisites'] = all_courses['prerequsities'].apply(lambda lst: [find_concept_dimension(v, concept_graph, parent_concepts) for v in lst])
+all_courses['prerequisites_vector'] = all_courses['encoded_prerequisites'].apply(count_sort, dimension_size=vector_size)
+
+
+
 
 #write dataframe to file
+all_courses.to_csv('final_courses.csv')

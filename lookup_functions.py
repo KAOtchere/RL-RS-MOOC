@@ -18,6 +18,7 @@ def make_concept_adjacency_list(input_file):
     with open(input_file, 'r', encoding='utf-8') as file:
             for line in file:
                     line = line.strip()
+                    # print(line)
                     if not line:
                         continue  # Skip empty lines
 
@@ -33,6 +34,7 @@ def make_concept_adjacency_list(input_file):
                             relationships[parent] = [son]
                         else:
                             relationships[parent].append(son)
+                    
 
  
 
@@ -40,7 +42,6 @@ def make_concept_adjacency_list(input_file):
 
     relationships_dataframe = relationships_dataframe.explode('son')
     
-
 
     return relationships_dataframe
 
@@ -56,15 +57,29 @@ def find_path(adjacency_list, concept):
 
 
 def determine_parents_dimensions(adjacenct_list):
-    parents = adjacenct_list['parent'][~adjacenct_list['parent'].isin(adjacenct_list['son'])] 
+    parents = adjacenct_list['parent'][~adjacenct_list['parent'].isin(adjacenct_list['son'])]
     parents_with_dimension = parents.reset_index(drop=True)
     parents_with_dimension = parents_with_dimension.reset_index().rename(columns={'index': 'dimension'})
     return parents_with_dimension
 
-def find_concept_dimension(adjacency_list, parent_dimensions, concept):
+def find_concept_dimension(concept, adjacency_list, parent_dimensions):
     parent = find_path(adjacency_list, concept)
-    parent_record = parent_dimensions[parent_dimensions['concept'] == parent]
+    parent_record = parent_dimensions[parent_dimensions['parent'] == parent]
     if parent_record.empty:
          return -1
     dimension = parent_record['dimension'].values[0]
     return dimension
+
+def count_sort(concepts, dimension_size):
+    # sizeOfArray = len(dimension_size)
+
+    range_of_values = dimension_size
+
+    count_array = [0] * (range_of_values)
+
+    for i in range(len(concepts)):
+        count_array[concepts[i]] = count_array[concepts[i]] + 1
+
+    # count_array = pd.Series(count_array)
+
+    return count_array

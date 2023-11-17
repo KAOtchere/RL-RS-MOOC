@@ -51,7 +51,7 @@ def extract_relationships(courses_file, prerequisite_dependency_file):
                 for concept in concepts:
                     if concept in relationship_dict:
                         prerequisites.update(list(relationship_dict[concept]))
-                course["prerequsities"] = list(prerequisites) #add prerequisite field to course object
+                course["prerequisities"] = list(prerequisites) #add prerequisite field to course object
                 updated_courses.append(course) #add course to new course data structure
 
             except json.JSONDecodeError:
