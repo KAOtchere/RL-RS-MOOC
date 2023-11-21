@@ -75,11 +75,20 @@ def count_sort(concepts, dimension_size):
 
     range_of_values = dimension_size
 
-    count_array = [0] * (range_of_values)
+    count_array = ([0] * (range_of_values)) #+1 to account for the concepts that have no parent
 
     for i in range(len(concepts)):
+        if concepts[i] == -1:
+             continue
         count_array[concepts[i]] = count_array[concepts[i]] + 1
 
     # count_array = pd.Series(count_array)
 
     return count_array
+
+def find_course_vector(course_id, course_dictionary):
+    course = None
+    matched_courses = course_dictionary[course_dictionary['course_id'] == course_id]
+    if matched_courses.empty == False:
+        course = matched_courses.iloc[0]
+    return course
